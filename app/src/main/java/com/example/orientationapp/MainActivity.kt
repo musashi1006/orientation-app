@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         if (ambientTemperatureSensor == null) {
              // センサーがない場合の処理
-             textView.text = "周囲温度センサーはありません"
+            textView.text = "周囲温度センサーはありません"
         } else {
             // センサーがある場合の処理
             textView.text = "周囲温度センサーがあります"
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val batteryStatus = registerReceiver(null, intentFilter)
         val temp = batteryStatus?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
         val temperature = temp / 10.0
-        textView.append("\nバッテリー温度: $temperature ℃")
+        //textView.append("\nバッテリー温度: $temperature ℃")
     }
 
     // SensorEventListenerの実装
