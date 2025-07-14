@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private val gravity = FloatArray(3)
     private val geomagnetic = FloatArray(3)
 
+    private var ambientTemperatureSensor: Sensor? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         // センサー値表示用TextView
         textView = TextView(this)
         layout.addView(textView)
+
+        //temperatureTextView = TextView(this)
+        //setContentView(temperatureTextView)
 
         // BatteryActivity起動ボタン
         val button = Button(this)
@@ -49,6 +54,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+        // ambient temperature
+        ambientTemperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+        if (ambientTemperatureSensor == null) {
+            textView.append = "周囲温度センサーが搭載されていません"
+        }
 
         // バッテリー温度取得
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
@@ -81,6 +92,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val temperature = temp / 10.0
             textView.append("\nバッテリー温度: $temperature ℃")
         }
+        if (event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+            val temperature = event.values[0]
+            textView.append = "周囲温度: $temperature ℃"
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -94,6 +109,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         magnetometer?.also { sensor ->
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI)
+        }
+        ambientTemperatureSensor?.also { sensor ->
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
     }
 
