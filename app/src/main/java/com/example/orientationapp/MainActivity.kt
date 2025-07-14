@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         // ambient temperature
         ambientTemperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
-        if (ambientTemperatureSensor == null) {
-            textView.append("\n周囲温度センサーが搭載されていません")
+        if (ambientTemperatureSensor != null) {
+            textView.append("\n周囲温度センサーが搭載されてimasu")
         }
 
         // バッテリー温度取得
