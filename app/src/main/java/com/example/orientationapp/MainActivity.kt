@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         if (event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
             val temperature = event.values[0]
-            textView.append = "周囲温度: $temperature ℃"
+            textView.append("周囲温度: $temperature ℃")
         }
     }
 
