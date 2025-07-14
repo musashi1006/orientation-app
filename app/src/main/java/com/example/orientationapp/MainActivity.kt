@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         // ambient temperature
         ambientTemperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         if (ambientTemperatureSensor == null) {
-            textView.append = "周囲温度センサーが搭載されていません"
+            textView.append("\n周囲温度センサーが搭載されていません")
         }
 
         // バッテリー温度取得
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val batteryStatus = registerReceiver(null, intentFilter)
         val temp = batteryStatus?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
         val temperature = temp / 10.0
-        textView.text("\nバッテリー温度: $temperature ℃")
+        textView.append("\nバッテリー温度: $temperature ℃")
     }
 
     // SensorEventListenerの実装
