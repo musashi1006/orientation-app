@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val batteryStatus = registerReceiver(null, intentFilter)
         val temp = batteryStatus?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
         val temperature = temp / 10.0
-        textView.append("\nバッテリー温度: $temperature ℃")
+        textView.append("\nバッテリー温度: ${temperature.toString()} ℃")
     }
 
     // SensorEventListenerの実装
