@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             batteryTextView.text = "\nバッテリー温度: $temperature ℃"
         }
         if (event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
-            val temperature = event.values[0]
+            val ambientTemp = event.values[0]
             statusTextView.text = "周囲温度センサーがあります\n周囲温度: $ambientTemp ℃"
         }
     }
