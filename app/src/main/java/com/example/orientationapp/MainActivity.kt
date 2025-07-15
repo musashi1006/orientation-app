@@ -32,12 +32,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
 
-        // センサー値表示用TextView
-        textView = TextView(this)
-        layout.addView(textView)
+        // 各 TextView を初期化してレイアウトに追加
+        statusTextView = TextView(this)
+        layout.addView(statusTextView)
 
-        //temperatureTextView = TextView(this)
-        //setContentView(temperatureTextView)
+        orientationTextView = TextView(this)
+        layout.addView(orientationTextView)
+
+        batteryTextView = TextView(this)
+        layout.addView(batteryTextView)
 
         // BatteryActivity起動ボタン
         val button = Button(this)
@@ -54,24 +57,23 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-
-        // ambient temperature
         ambientTemperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
 
+        // 周囲温度センサーの有無を表示
         if (ambientTemperatureSensor == null) {
              // センサーがない場合の処理
-            textView.text = "周囲温度センサーはありません"
+            statusTextView.text = "周囲温度センサーはありません"
         } else {
             // センサーがある場合の処理
-            textView.text = "周囲温度センサーがあります"
+            statusTextView.text = "周囲温度センサーがあります"
         }
 
-        // バッテリー温度取得
+        // 起動時のバッテリー温度表示
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         val batteryStatus = registerReceiver(null, intentFilter)
         val temp = batteryStatus?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
         val temperature = temp / 10.0
-        //textView.append("\nバッテリー温度: $temperature ℃")
+        batteryTextView.text = "バッテリー温度: $temperature ℃"
     }
 
     // SensorEventListenerの実装
@@ -89,17 +91,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val azimuth = Math.toDegrees(orientation[0].toDouble())
             val pitch = Math.toDegrees(orientation[1].toDouble())
             val roll = Math.toDegrees(orientation[2].toDouble())
-            textView.text = "Azimuth: %.1f°\nPitch: %.1f°\nRoll: %.1f°".format(azimuth, pitch, roll)
+            orientationTextView.text = "Azimuth: %.1f°\nPitch: %.1f°\nRoll: %.1f°".format(azimuth, pitch, roll)
             // バッテリー温度も再表示
             val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
             val batteryStatus = registerReceiver(null, intentFilter)
             val temp = batteryStatus?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
             val temperature = temp / 10.0
-            textView.append("\nバッテリー温度: $temperature ℃")
+            batteryTextView.text = "\nバッテリー温度: $temperature ℃"
         }
         if (event.sensor.type == Sensor.TYPE_AMBIENT_TEMPERATURE) {
             val temperature = event.values[0]
-            textView.append("周囲温度: $temperature ℃")
+            statusTextView.text = "周囲温度センサーがあります\n周囲温度: $ambientTemp ℃"
         }
     }
 
