@@ -18,8 +18,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var magnetometer: Sensor? = null
-    private lateinit var textView: TextView
-
+    private lateinit var orientationTextView: TextView
+    private lateinit var statusTextView: TextView
+    private lateinit var batteryTextView: TextView
+    
     private val gravity = FloatArray(3)
     private val geomagnetic = FloatArray(3)
 
